@@ -1,0 +1,67 @@
+{% extends "bootstrap/base.html" %}
+
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='style.css')}}">
+{% endblock %}
+
+{% block scripts %}
+<script src="{{url_for('.static', filename='myscripts.js')}}"></script>
+{{super()}}
+{% endblock %}
+
+{% block title %}&#x1F60D;{% endblock %}
+
+{% block content %}
+<div class="container">
+
+{% if evaluation %}
+  {% with message, category = evaluation %}
+    <div class="alert alert-{{ category }} text-center" role="alert"><strong>{{ message | safe}}<strong></div>
+  {% endwith %}
+{% endif %}
+
+<div class="row">
+  <form method=get class="col-sm-4 col-sm-offset-4">
+    <input type="hidden" name="type" value="{{ translation.word_type }}">
+    <div class="form-group">
+      <label>Litauisch: </label>
+      <input class="form-control" type=text name="lithuanian" value="{{ translation.lithuanian }}" readonly>
+    </div>
+    {% if translation.word_type == "noun" %}
+    <div class="form-group">
+      <label>Singular: </label>
+      <input class="form-control" type=text name="singular">
+    </div>
+    <div class="form-group">
+      <label>Plural: </label>
+      <input class="form-control" type=text name="plural">
+    </div>
+    {% elif translation.word_type == "verb" %}
+    <div class="form-group">
+      <label>Infinitiv: </label>
+      <input class="form-control" type=text name="infinitive">
+    </div>
+    <div class="form-group">
+      <label>Präsens: </label>
+      <input class="form-control" type=text name="present">
+    </div>
+    <div class="form-group">
+      <label>Pretäritum: </label>
+      <input class="form-control" type=text name="past">
+    </div>
+    <div class="form-group">
+      <label>Perfekt: </label>
+      <input class="form-control" type=text name="perfect">
+    </div>
+    {% else %}
+    <div class="form-group">
+      <label>Deutsch: </label>
+      <input class="form-control" type=text name="word">
+    </div>
+    {% endif %}
+    <button type=submit class="btn btn-primary form-control">prüfen</button>
+  </form>
+</div>
+</div>
+{% endblock %}
